@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">City Game</string>
+    <string name="step_counter">Ход %1$s</string>
+    <string name="ru_locale">АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ</string>
+</resources>
