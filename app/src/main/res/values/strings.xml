@@ -3,5 +3,8 @@
     <string name="step_counter">Ход %1$s</string>
     <string name="word">Слово: %1$s, вам на %2$s</string>
     <string name="error_msg">Введено неверное слово</string>
+    <string name="win_msg">Вы выиграли!</string>
+    <string name="defeat_msg">Вы проиграли(</string>
+    <string name="id_text">Ваш ID: %1$s</string>
     <string name="ru_locale">АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ</string>
 </resources>

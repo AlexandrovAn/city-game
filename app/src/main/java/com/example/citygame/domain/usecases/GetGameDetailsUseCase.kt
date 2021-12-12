@@ -11,4 +11,8 @@ class GetGameDetailsUseCase @Inject constructor(
 
     fun getCityFlow() = repo.getCityFlow()
 
+    fun getClientIdFlow() = repo.getClientIdFlow()
+
+    fun getLoserFlow() = repo.getLoserEventFlow()
+
 }

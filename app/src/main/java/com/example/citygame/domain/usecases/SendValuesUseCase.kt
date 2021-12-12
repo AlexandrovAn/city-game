@@ -12,4 +12,6 @@ class SendValuesUseCase @Inject constructor(
         repo.updateCounter()
     }
 
+    fun endGame(loser: String) = repo.surrenderEvent(loser)
+
 }

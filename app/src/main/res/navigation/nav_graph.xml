@@ -9,7 +9,14 @@
         android:id="@+id/game_fragment"
         android:name="com.example.citygame.presentation.fragments.GameFragment"
         tools:layout="@layout/game_fragment">
-
+        <action
+            android:id="@+id/action_end_game"
+            app:destination="@id/end_game_fragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/end_game_fragment"
+        android:name="com.example.citygame.presentation.fragments.GameEndFragment"
+        tools:layout="@layout/end_game_fragment" />
 
 </navigation>
