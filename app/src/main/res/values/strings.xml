@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">City Game</string>
     <string name="step_counter">Ход %1$s</string>
+    <string name="word">Слово: %1$s, вам на %2$s</string>
+    <string name="error_msg">Введено неверное слово</string>
     <string name="ru_locale">АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ</string>
 </resources>
