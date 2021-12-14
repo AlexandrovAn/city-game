@@ -3,19 +3,17 @@ package com.example.citygame.presentation.viewmodels
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
 import com.example.citygame.domain.usecases.GetGameDetailsUseCase
 import com.example.citygame.domain.usecases.SendValuesUseCase
 import com.example.citygame.domain.usecases.ValidationUseCase
 import com.example.citygame.presentation.utils.combineNotNull
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class GameViewModel @Inject constructor(
-    private val getDataUseCase: GetGameDetailsUseCase,
+    getDataUseCase: GetGameDetailsUseCase,
     private val sendValuesUseCase: SendValuesUseCase,
     private val validationUseCase: ValidationUseCase
 ) : ViewModel() {
