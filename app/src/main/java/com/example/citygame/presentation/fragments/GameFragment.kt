@@ -1,57 +1,75 @@
 package com.example.citygame.presentation.fragments
 
-import android.text.InputFilter
-import com.example.citygame.GameApp
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import com.example.citygame.R
-import com.example.citygame.data.websocket.SocketHandler
 import com.example.citygame.databinding.GameFragmentBinding
 import com.example.citygame.presentation.utils.BindingFragment
+import com.example.citygame.presentation.viewmodels.GameViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.android.synthetic.main.game_fragment.*
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class GameFragment : BindingFragment<GameFragmentBinding>() {
 
-    private val job = Job()
-    private val uiScope = CoroutineScope(Dispatchers.Main + job)
+    private val viewModel: GameViewModel by hiltNavGraphViewModels(R.id.nav_graph)
+    private var lastCharacter = ""
+    private var step = ""
+    private var id = ""
 
     override fun onCreateBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
     ) = GameFragmentBinding.inflate(inflater, container, false)
 
+    private fun initObservers() {
+        viewModel.word.observe(viewLifecycleOwner, { word ->
+            lastCharacter = word.last().toString()
+            currentWord.text = getString(R.string.word, word, lastCharacter)
+        })
+        viewModel.counter.observe(viewLifecycleOwner, { counter ->
+            step = counter
+            stepCounter.text = getString(R.string.step_counter, counter.toString())
+        })
+        viewModel.clientId.observe(viewLifecycleOwner, {
+            id = it
+            idText.text = getString(R.string.id_text, id)
+        })
+        viewModel.loser.observe(viewLifecycleOwner, { navigateToEndGame() })
+    }
+
     override fun GameFragmentBinding.onInitView() {
-        cityValue.filters = arrayOf(InputFilter.AllCaps())
-
-        val socket = SocketHandler.socket()
-
-        validateBtn.setOnClickListener {
-            socket.emit("counter")
-            socket.emit("city", cityValue.text.toString())
+        initObservers()
+        validateBtn.setOnClickListener { validate() }
+        surrenderBtn.setOnClickListener {
+            viewModel.endGame(id)
+            navigateToEndGame()
         }
+    }
 
-        socket.on("city") { args ->
-            args[0]?.let { word ->
-                val city = word as String
-                uiScope.launch {
-                    currentWord.text = getString(R.string.step_counter, city)
-                }
-            }
+    private fun GameFragmentBinding.validate() = lifecycleScope.launch {
+        val text = if (!cityValue.text.isNullOrEmpty()) cityValue.text.toString() else ""
+        val validationFlag = viewModel.validate(text)
+        val firstCharacter = text.first().toString()
+        val lastCharacterCondition = firstCharacter != lastCharacter.uppercase()
+        val stepCondition = step != "1"
+        val emptyFieldCondition = cityValue.text.isNullOrEmpty()
+        if ((lastCharacterCondition && stepCondition) || emptyFieldCondition || !validationFlag) {
+            setError(R.string.error_msg)
+        } else {
+            setError(0)
+            viewModel.sendValues(cityValue.text.toString())
         }
+    }
 
-        socket.on("counter") { args ->
-            if (args[0] != null) {
-                val counter = args[0] as Int
-                uiScope.launch {
-                    stepCounter.text = getString(R.string.step_counter, counter.toString())
-                }
-            }
-        }
+    private fun navigateToEndGame() =
+        Navigation.findNavController(binding.root).navigate(R.id.end_game_fragment)
 
+    private fun setError(id: Int) {
+        if (id != 0) textInputLayout.error = getString(id) else textInputLayout.error = null
     }
 }
