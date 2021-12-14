@@ -11,9 +11,9 @@ node server.js
 ```
 Также надо сменить путь для подлкючения в [SocketHandler](https://github.com/AlexandrovAn/city-game/blob/master/app/src/main/java/com/example/citygame/data/websocket/SocketHandler.kt)
 
-```
+```kotlin
 @Synchronized
-    fun setSocket() {
+fun setSocket() {
         try {
             socket = IO.socket("http://192.168.1.103:3000")
         } catch (e: URISyntaxException) {
