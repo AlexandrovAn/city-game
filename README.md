@@ -9,6 +9,18 @@
 ```
 node server.js
 ```
+Также надо сменить путь для подлкючения в [SocketHandler](https://github.com/AlexandrovAn/city-game/blob/master/app/src/main/java/com/example/citygame/data/websocket/SocketHandler.kt)
+
+```
+@Synchronized
+    fun setSocket() {
+        try {
+            socket = IO.socket("http://192.168.1.103:3000")
+        } catch (e: URISyntaxException) {
+            Log.e("Socket error", e.toString())
+        }
+    }
+ ```
 
 Для запуска приложения для двух клинетов я использовал 2 эмулятора встроенные в [Android Studio](https://developer.android.com/studio)
 
