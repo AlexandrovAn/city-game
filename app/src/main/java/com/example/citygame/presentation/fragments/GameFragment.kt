@@ -1,9 +1,9 @@
 package com.example.citygame.presentation.fragments
 
-import android.text.InputFilter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.example.citygame.R
 import com.example.citygame.databinding.GameFragmentBinding
@@ -11,6 +11,7 @@ import com.example.citygame.presentation.utils.BindingFragment
 import com.example.citygame.presentation.viewmodels.GameViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.game_fragment.*
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class GameFragment : BindingFragment<GameFragmentBinding>() {
@@ -43,7 +44,6 @@ class GameFragment : BindingFragment<GameFragmentBinding>() {
 
     override fun GameFragmentBinding.onInitView() {
         initObservers()
-        cityValue.filters = arrayOf(InputFilter.AllCaps())
         validateBtn.setOnClickListener { validate() }
         surrenderBtn.setOnClickListener {
             viewModel.endGame(id)
@@ -51,13 +51,14 @@ class GameFragment : BindingFragment<GameFragmentBinding>() {
         }
     }
 
-    private fun GameFragmentBinding.validate() {
-        val firstCharacter =
-            if (!cityValue.text.isNullOrEmpty()) cityValue.text?.first().toString() else ""
-        val lastCharacterCondition = firstCharacter != lastCharacter
+    private fun GameFragmentBinding.validate() = lifecycleScope.launch {
+        val text = if (!cityValue.text.isNullOrEmpty()) cityValue.text.toString() else ""
+        val validationFlag = viewModel.validate(text)
+        val firstCharacter = text.first().toString()
+        val lastCharacterCondition = firstCharacter != lastCharacter.uppercase()
         val stepCondition = step != "1"
         val emptyFieldCondition = cityValue.text.isNullOrEmpty()
-        if ((lastCharacterCondition && stepCondition) || emptyFieldCondition) {
+        if ((lastCharacterCondition && stepCondition) || emptyFieldCondition || !validationFlag) {
             setError(R.string.error_msg)
         } else {
             setError(0)

@@ -1,8 +1,11 @@
 package com.example.citygame.di
 
+import com.example.citygame.domain.repositories.CitiesRepository
+import com.example.citygame.domain.repositories.SavedWordsRepository
 import com.example.citygame.domain.repositories.SocketRepository
 import com.example.citygame.domain.usecases.GetGameDetailsUseCase
 import com.example.citygame.domain.usecases.SendValuesUseCase
+import com.example.citygame.domain.usecases.ValidationUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,7 +22,17 @@ class GameModule {
 
     @Provides
     @Singleton
-    fun provideSendValuesUseCase(repo: SocketRepository) = SendValuesUseCase(repo)
+    fun provideSendValuesUseCase(
+        socketRepo: SocketRepository,
+        savedWordsRepo: SavedWordsRepository
+    ) = SendValuesUseCase(socketRepo, savedWordsRepo)
+
+    @Provides
+    @Singleton
+    fun provideValidationUseCase(
+        citiesRepo: CitiesRepository,
+        savedWordsRepo: SavedWordsRepository
+    ) = ValidationUseCase(citiesRepo, savedWordsRepo)
 
 
 }

@@ -2,7 +2,6 @@ package com.example.citygame.di
 
 import android.content.Context
 import com.example.citygame.data.db.GameDatabase
-import com.example.citygame.data.websocket.SocketHandler
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,6 +19,10 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun provideStepDao(db: GameDatabase) = db.stepDao()
+    fun provideStepDao(db: GameDatabase) = db.savedWordsDao()
+
+    @Provides
+    @Singleton
+    fun provideCityDao(db : GameDatabase) = db.cityDao()
 
 }
