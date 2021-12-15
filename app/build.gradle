@@ -79,6 +79,9 @@ dependencies {
 
     //Live - event
     implementation "com.github.hadilq:live-event:1.3.0"
+
+    //Schema lib
+    implementation "net.pwall.json:json-kotlin-schema:0.31"
 }
 
 kapt {
