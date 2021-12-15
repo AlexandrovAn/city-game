@@ -28,3 +28,5 @@ fun setSocket() {
 Нам показалось, что слишком жестоко защитывать игроку поражение, если он ввел повтоярющееся слово, поэтому мы просто блокируем отправку такого ответа. В остальном игра полностью соотвествует варианту.
 
 [Десериализация объекта справочника городов оттестирована по средствам JUnit](https://github.com/AlexandrovAn/city-game/blob/develop/app/src/test/java/com/example/citygame/data/entities/CityTest.kt)
+
+[Тестирование схемы](https://github.com/AlexandrovAn/city-game/blob/master/app/src/test/java/com/example/citygame/data/entities/SchemaTest.kt)
